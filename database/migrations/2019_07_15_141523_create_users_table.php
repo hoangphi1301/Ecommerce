@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email',100)->unique();
             $table->string('phone',50)->default('none');
             $table->string('password',100);
-            $table->string('position',100)->default('giamdoc');
+            $table->string('position',50)->default('giamdoc');
             $table->tinyInteger('active')->default(1);
             $table->tinyInteger('is_admin')->default(1);
             $table->rememberToken();

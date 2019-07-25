@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateProfileRequest;
+use Gate;
 use Auth;
 use App\User;
 use App\UserProfile;
+use App\UserPermit;
 use Hash;
 
 class AdminController extends Controller
@@ -23,7 +25,13 @@ class AdminController extends Controller
     }
 
     public function getRegister(){
-    	return view('admin.register');
+        if(Gate::allows('create-user',Auth::user()))
+        {
+    	   return view('admin.register');
+        }
+
+        return redirect()->back();
+        
     }
 
     public function postChangePassword(Request $rq,$id){
@@ -57,35 +65,107 @@ class AdminController extends Controller
     }
 
     public function getDeleteUser($id){
-        if(Auth::user()->id==$id){
-             return redirect()->route('quanlyuser')->with('error','Bạn không thể xóa tài khoản của chính mình');
-        }
-        else{
-            $users = User::all();
-            foreach($users as $u){
-                if($u->id == $id){
-                    User::find($id)->delete();
-                    return redirect()->route('quanlyuser')->with('thanhcong','Đã xóa thành công !');
-                }
+        if(Gate::allows('delete-user',Auth::user()))
+        {
+            if(Auth::user()->id==$id){
+                 return redirect()->route('quanlyuser')->with('error','Bạn không thể xóa tài khoản của chính mình');
             }
-            return redirect()->back();
+            else{
+                $users = User::all();
+                foreach($users as $u){
+                    if($u->id == $id){
+                        User::find($id)->delete();
+                        return redirect()->route('quanlyuser')->with('thanhcong','Đã xóa thành công !');
+                    }
+                }
+                return redirect()->back();
+            }
         }
-
+        return redirect()->back();
     }
 
     public function postUpdateUser(Request $rq,$id){
-        if(Auth::user()->id==$id){
-             return response()->json(['thatbai'=>'Bạn không thể cập nhật tài khoản của chính mình']);
-         }
-        else{
-            $user = User::find($id);
-            $user->position = $rq->position;
-            $user->is_admin = $rq->is_admin;
-            $user->active = $rq->active;
-            $user->save();
-            return response()->json(['thanhcong'=>'Cập nhật tài khoản thành công']);
-        }
+        if(Gate::allows('update-user',Auth::user()))
+        {
+                if(Auth::user()->id==$id){
+                     return response()->json(['thatbai'=>'Bạn không thể cập nhật tài khoản của chính mình']);
+                 }
+                else{
+                    $user = User::find($id);
+                    $user->position = $rq->position;
+                    $user->is_admin = $rq->is_admin;
+                    $user->active = $rq->active;
+                 
+                 //Set view-user permission
+                    if(UserPermit::where('user_id',$id)->where('permit','view-user')->count()==0){
+                        if($rq->has('view')){
+                            $permit = new UserPermit();
+                            $permit->user_id = $id;
+                            $permit->permit = $rq->view;
+                            $permit->save();
+                        }
+                    }else{
+                        if($rq->has('view')){
+                            
+                        }else{
+                            UserPermit::where('user_id',$id)->where('permit','view-user')->delete();
+                        }
+                    }
 
+                //Set create-user permission
+                    if(UserPermit::where('user_id',$id)->where('permit','create-user')->count()==0){
+                        if($rq->has('create')){
+                            $permit = new UserPermit();
+                            $permit->user_id = $id;
+                            $permit->permit = $rq->create;
+                            $permit->save();
+                        }
+                    }else{
+                        if($rq->has('create')){
+                            
+                        }else{
+                            UserPermit::where('user_id',$id)->where('permit','create-user')->delete();
+                        }
+                    }
+
+                //Set update-user permission
+                    if(UserPermit::where('user_id',$id)->where('permit','update-user')->count()==0){
+                        if($rq->has('update')){
+                            $permit = new UserPermit();
+                            $permit->user_id = $id;
+                            $permit->permit = $rq->update;
+                            $permit->save();
+                        }
+                    }else{
+                        if($rq->has('update')){
+                           
+                        }else{
+                             UserPermit::where('user_id',$id)->where('permit','update-user')->delete();
+                        }
+                    }
+
+                //Set delete-user permission
+                    if(UserPermit::where('user_id',$id)->where('permit','delete-user')->count()==0){
+                        if($rq->has('delete')){
+                            $permit = new UserPermit();
+                            $permit->user_id = $id;
+                            $permit->permit = $rq->delete;
+                            $permit->save();
+                        }
+                    }else{
+                        if($rq->has('delete')){
+                            
+                        }else{
+                            UserPermit::where('user_id',$id)->where('permit','delete-user')->delete();
+                        }
+                    }
+                // End check Permissions
+
+                $user->save();
+                return response()->json(['thanhcong'=>'Cập nhật tài khoản thành công']);
+                }
+        }
+            return redirect()->back();
     }
 
     public function getSearchUser(Request $rq){
