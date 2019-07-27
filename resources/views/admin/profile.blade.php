@@ -17,40 +17,40 @@
 
           <!-- Profile Image -->
           <div class="box box-primary">
-            <div class="box-body box-profile" style="background-color: MintCream;">
+            <div class="box-body box-profile">
               <img class="profile-user-img img-responsive img-circle" src="source/avatar/{{$user->userprofile->avatar}}" alt="User profile picture">
 
               <h3 class="profile-username text-center">{{$user->name}}</h3>
 
               <p class="text-muted text-center"><i>Ngày tham gia {{$user->created_at}}</i></p>
 
-              <ul class="list-group list-group-unbordered" style="width: 350px;margin: auto; ">
+              <ul class="list-group list-group-unbordered" style="width: 400px;margin: auto; ">
                 <li class="list-group-item">
-                  <b>Email</b> <a class="pull-right">{{$user->email}}</a>
+                  <b>Email</b> <p class="pull-right">{{$user->email}}</p>
                 </li>
                 <li class="list-group-item">
-                  <b>Số điện thoại</b> <a class="pull-right">{{$user->phone}}</a>
+                  <b>Số điện thoại</b> <p class="pull-right">{{$user->phone}}</p>
                 </li>
                 <li class="list-group-item">
-                  <b>Ngày sinh</b> <a class="pull-right">    
+                  <b>Ngày sinh</b> <p class="pull-right">    
                     {{$user->userprofile->birthday}}
-                  </a>
+                  </p>
                 </li>
                  <li class="list-group-item">
-                  <b>Địa chỉ</b> <a class="pull-right">
+                  <b>Địa chỉ</b> <p class="pull-right">
                     
                     {{$user->userprofile->address}}
                    
-                  </a>
+                  </p>
                 </li>
                  <li class="list-group-item">
-                  <b>Giới tính</b> <a class="pull-right">
+                  <b>Giới tính</b> <p class="pull-right">
                   @if($user->userprofile->sex == 0)
                       Nữ
                       @else
                       Nam
                   @endif
-                  </a>
+                  </p>
                 </li>
                 <li >
                   <!-- Click show Modal Change Password -->
@@ -59,16 +59,16 @@
                 </li>
               </ul>
               
-              <a href="{{route('updateprofile',$user->id)}}" class="btn btn-primary btn-block" style="width: 200px; margin: 20px auto;"><b>Chỉnh sửa</b></a>
+              <a href="{{route('updateprofile',$user->id)}}" class="btn btn-primary btn-block" style="width: 150px; margin: 20px auto;"><b>Chỉnh sửa</b></a>
             </div>
             <!-- /.box-body -->
           </div>
           <!-- /.box -->
 
           <!-- About you box -->
-          <div class="box box-primary">
-                <div class="callout callout-success">
-                <h4 style="color: Aqua;">Thêm về bạn</h4>
+          <div class="box box-info">
+                <div class="callout callout-info">
+                <h4 style="color: AliceBlue;">Thêm về bạn</h4>
                 <p>{{$user->userprofile->description}}.</p>
               </div>     
           </div>
@@ -80,44 +80,51 @@
      <!-- Start Modal Change Password-->
           <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered" role="document">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <img src="source/icon/icon_change_password.png" width="60px" style="margin-bottom: 10px;">
-                  <h3 class="modal-title" style="color: red;display: inline;" id="exampleModalLongTitle"><b>Đổi mật khẩu</b></h3>
-                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                  </button>
+              <div class="modal-content" >
+
+                <div class="modal-header" style="background-color: AliceBlue">
+                    <div class="input-group">
+                    <span class="input-group-addon"><img src="source/icon/icon_change_password.png" width="30px"></span>
+                    <h3 class="modal-title">Đổi mật khẩu</h3>
+                  </div>
                 </div>
+
                 <div class="modal-body">
-                     <form class="changeform" id="frmChangePasswrd" role="form" action="{{route('changepassword',$user->id)}}" method="post" style="background-color: MintCream;">
+                     <form id="frmChangePasswrd" role="form" action="{{route('changepassword',$user->id)}}" method="post">
                      
 
-                      <div class="box-body">
+                      <div class="form-group">
 
-                          <label >Nhập mật khẩu cũ</label>
-                          <div class="input-group">
+                          <label class="col-sm-offset-1">Mật khẩu cũ</label>
+                          <div class="input-group col-sm-9 col-sm-offset-1">
                             <span class="input-group-addon"><i class="fa fa-user-secret"></i></span>
                             <input type="password" name="old_password" class="form-control ipPassword" placeholder="Nhập mật khẩu cũ">
                           </div>
+                        </div>
 
-                         <label >Mật khẩu mới</label>
-                          <div class="input-group">
+                        <div class="form-group">
+                         <label class="col-sm-offset-1">Mật khẩu mới</label>
+                          <div class="input-group col-sm-9 col-sm-offset-1">
                             <span class="input-group-addon"><i class="fa fa-user-secret"></i></span>
                             <input type="password" name="password" class="form-control ipPassword" placeholder="Nhập mật khẩu mới">
                           </div>
+                        </div>
 
-                           </br>
-                         <label>Xác nhận mật khẩu</label>
-                          <div class="input-group">
+                        <div class="form-group">
+                         <label class="col-sm-offset-1">Xác nhận mật khẩu</label>
+                          <div class="input-group col-sm-9 col-sm-offset-1">
                             <span class="input-group-addon"><i class="fa fa-user-secret"></i></span>
                             <input type="password" name="re_password" class="form-control ipPassword" placeholder="Xác nhận mật khẩu">
                           </div>
+                        </div>
 
                       </div>
 
-                      <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
-                        <input type="submit"  id="btnSubmit" class="btn btn-primary" value="Xác Nhận">
+                      <div class="modal-footer" style="background-color:AliceBlue">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+                            <input type="submit"  id="btnSubmit" class="btn btn-primary" value="Xác Nhận">
+                        </div>
 
                       </div>
 

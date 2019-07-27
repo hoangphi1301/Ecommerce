@@ -1,8 +1,8 @@
 @extends('layouts.master')
 @section('content')
-<div class="box box-primary" style="background-color: MintCream;">
-            <div class="box-header with-border">
-              <h2 class="box-title" style="font-weight: bold; color: black;font-size: 25px">Chỉnh sửa Profile của bạn</h2>
+<div class="box box-primary" style="padding:50px 150px 50px 150px">
+            <div class="box-header with-border" style="background-color:AliceBlue">
+              <h2 class="box-title" style="font-weight: bold;font-size: 25px">Chỉnh sửa Profile của bạn</h2>
             
             </div>
           <!-- Show messages from Server -->
@@ -28,71 +28,83 @@
 
               <div class="box-body">
                 <div align="center">
-                <label style="display: block;">Ảnh Đại Diện Của Bạn</label>
-                <img id="imgClick" class="img-circle" src="source/avatar/{{$user->userprofile->avatar}}" width="200px" height="200px">
-                <input type="file" name="avatar" style="display: none;" id="ipFile" accept="image/*" >
-              </div>
-
-                 <label>Họ Tên</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa  fa-user"></i></span>
-                  <input type="text" name="name" value="{{$user->name}}" class="form-control" placeholder="Nhập họ tên">
+                  <label style="display: block;">Ảnh Đại Diện Của Bạn</label>
+                  <img id="imgClick" class="img-circle" src="source/avatar/{{$user->userprofile->avatar}}" width="100px" height="100px">
+                  <input type="file" name="avatar" style="display: none;" id="ipFile" accept="image/*" >
                 </div>
 
-                </br>
-                <label>Email</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                  <input disabled="true" value="{{$user->email}}" type="email" class="form-control" placeholder="Email">
-                </div>
+                <div class="form-group">
+                     <label class="col-sm-offset-1">Họ Tên</label>
+                    <div class="input-group col-sm-offset-1 col-sm-10">
+                      <span class="input-group-addon"><i class="fa  fa-user"></i></span>
+                      <input type="text" name="name" value="{{$user->name}}" class="form-control" placeholder="Nhập họ tên">
+                    </div>
+                  </div>
+
+                <div class="form-group">
+                    <label class="col-sm-offset-1">Email</label>
+                    <div class="input-group col-sm-offset-1 col-sm-10">
+                      <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
+                      <input disabled="true" value="{{$user->email}}" type="email" class="form-control" placeholder="Email">
+                    </div>
+                  </div>
               
-                  </br>
-                  <label>Số điện thoại</label>
-                <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                  <input type="text" name="phone" value="{{$user->phone}}" class="form-control" placeholder="Nhập số điện thoại">
-                </div>
+                <div class="form-group">
+                      <label class="col-sm-offset-1">Số điện thoại</label>
+                    <div class="input-group col-sm-offset-1 col-sm-10">
+                      <span class="input-group-addon"><i class="fa fa-phone"></i></span>
+                      <input type="text" name="phone" value="{{$user->phone}}" class="form-control" placeholder="Nhập số điện thoại">
+                    </div>
+                  </div>
 
-                <br>
-                <label>Ngày Sinh</label>
-                <i class="fa fa-calendar" ></i>
-                <div class="input-group" >
-                <div class="col-10">
-                  <input class="form-control" name="birthday" type="date" value="{{$user->userprofile->birthday}}" min="1945-01-01" max="2020-01-01">
-                </div>
-               </div>
+                <div class="form-group">
+                    <label class="col-sm-offset-1">Ngày Sinh</label>
+                    <div class="input-group col-sm-offset-1 col-sm-10">
+                      <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
+                        <input class="form-control" name="birthday" type="date" value="{{$user->userprofile->birthday}}" min="1945-01-01" max="2020-01-01">
+                   </div>
+                 </div>
 
-                <br>
-                <label>Địa chỉ</label>
-                 <div class="input-group">
-                  <span class="input-group-addon"><i class="fa fa-home"></i></span>
-                  <input type="text" value="{{$user->userprofile->address}}" name="address" class="form-control" placeholder="Nhập địa chỉ">
-                </div>
-
-                <br>
+                <div class="form-group">
+                    <label class="col-sm-offset-1">Địa chỉ</label>
+                     <div class="input-group col-sm-offset-1 col-sm-10">
+                      <span class="input-group-addon"><i class="fa fa-home"></i></span>
+                      <input type="text" value="{{$user->userprofile->address}}" name="address" class="form-control" placeholder="Nhập địa chỉ">
+                    </div>
+                  </div>
                 
-                  <label style="font-size: 15px">Giới tính</label>
-                 <div class="input-group">
-                  @if($user->userprofile->sex == 0)
-                  <input type="radio" name="sex" value="1"> Nam &nbsp;&nbsp;
-                   <input type="radio" checked="" name="sex" value="0"> Nữ
-                   @else
-                   <input type="radio" checked name="sex" value="1"> Nam &nbsp;&nbsp;
-                   <input type="radio" name="sex" value="0"> Nữ
-                  @endif
+                <div class="form-group">
+                      <label class="col-sm-offset-1" style="font-size: 15px">Giới tính</label>
+                     <div class="input-group col-sm-offset-1 col-sm-10">
+                      @if($user->userprofile->sex == 0)
+                      <label class="radio-inline">
+                          <input type="radio" name="sex" value="1"> Nam
+                        </label>
+                      <label class="radio-inline">
+                           <input type="radio" checked="" name="sex" value="0"> Nữ
+                      </label>
+                       @else
+                       <label class="radio-inline">
+                          <input type="radio" checked name="sex" value="1"> Nam
+                        </label>
+                       <label class="radio-inline">
+                          <input type="radio" name="sex" value="0"> Nữ
+                      </label>
+                      @endif
+                    </div>
                 </div>
-             
-
-              <br>
+            
               <div class="form-group">
-                  <label>Thêm về bạn</label>
-                  <textarea class="form-control" name="description" rows="3" placeholder="Enter ...">{{$user->userprofile->description}}</textarea>
-                </div>
+                    <label class="form-group col-sm-offset-1">Thêm về bạn</label>
+                    <div class="form-group col-sm-offset-1 col-sm-10">
+                    <textarea class="form-control" name="description" rows="3" placeholder="Enter ...">{{$user->userprofile->description}}</textarea>
+                  </div>
+              </div>
                 
               </div>
               <!-- /.box-body -->
 
-              <div class="box-footer">
+              <div class="box-footer col-sm-offset-1">
                 <button type="submit" class="btn btn-primary">Thay Đổi</button>
               </div>
             </form>
