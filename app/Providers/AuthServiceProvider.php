@@ -28,6 +28,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('view-user', function ($user, $post) {
                 foreach($user->userpermit as $permit){
                 if($permit->permit == 'view-user'){
+
                     return true;
                 }
             }

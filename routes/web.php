@@ -19,9 +19,13 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['prefix'=>'admin','middleware'=>'checkadminlogin'],function(){
+Route::get('thong-bao',function(){
+	return view('message');
+})->name('message');
 
-		Route::get('dang-xuat','AdminController@getLogout')->name('dangxuat');
+Route::get('dang-xuat','AdminController@getLogout')->name('dangxuat');
+
+Route::group(['prefix'=>'admin','middleware'=>'checkadminlogin'],function(){
 
 		Route::get('quan-ly-user','AdminController@getUsers')->name('quanlyuser');
 
@@ -43,6 +47,14 @@ Route::group(['prefix'=>'admin','middleware'=>'checkadminlogin'],function(){
 			
 		Route::post('chinh-sua-ho-so/{id}','AdminController@postUpdateProfile')->name('updateprofile');
 			
+});
+
+Route::group(['prefix'=>'page','middleware'=>'checkadminlogin'],function(){
+
+	Route::get('san-pham','PageController@getProducts')->name('products');
+
+	Route::get('them-san-pham','PageController@getCreateProduct')->name('createproduct');
+
 });
 
 

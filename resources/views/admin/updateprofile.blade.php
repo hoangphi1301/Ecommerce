@@ -2,7 +2,7 @@
 @section('content')
 <div class="box box-primary" style="padding:50px 150px 50px 150px">
             <div class="box-header with-border" style="background-color:AliceBlue">
-              <h2 class="box-title" style="font-weight: bold;font-size: 25px">Chỉnh sửa Profile của bạn</h2>
+              <h4 class="box-title"><b>Chỉnh sửa Profile của bạn</b></h4>
             
             </div>
           <!-- Show messages from Server -->

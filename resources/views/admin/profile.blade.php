@@ -82,11 +82,8 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content" >
 
-                <div class="modal-header" style="background-color: AliceBlue">
-                    <div class="input-group">
-                    <span class="input-group-addon"><img src="source/icon/icon_change_password.png" width="30px"></span>
-                    <h3 class="modal-title">Đổi mật khẩu</h3>
-                  </div>
+                <div class="modal-header" style="background-color: AliceBlue">          
+                    <h4 class="modal-title"><b>Đổi mật khẩu</b></h4>
                 </div>
 
                 <div class="modal-body">

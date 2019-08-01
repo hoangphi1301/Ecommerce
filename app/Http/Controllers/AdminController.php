@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Requests\RegisterRequest;
 use App\Http\Requests\UpdateProfileRequest;
+use Illuminate\Support\Facades\Validator;
 use Gate;
 use Auth;
 use App\User;
@@ -35,7 +36,7 @@ class AdminController extends Controller
     }
 
     public function postChangePassword(Request $rq,$id){
-            $validator = \Validator::make($rq->all(),[
+            $validator = Validator::make($rq->all(),[
                     'old_password' => 'required',
                     'password'=>'required|min:6|max:50',
                     're_password'=>'same:password'

@@ -2,7 +2,7 @@
 @section('content')
 <div class="box box-primary" style="padding: 50px 150px 50px 150px">
             <div class="box-header with-border" style="background-color: AliceBlue">
-              <h2 class="box-title" style="font-weight: bold;font-size: 25px">Thêm User</h2>
+              <h4 class="box-title"><b>Thêm User</b></h4>
             </div>
           
           <!-- Show messages from Server -->

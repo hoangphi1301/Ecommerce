@@ -5,14 +5,14 @@
   <div class="table-wrapper" style="padding:50px">
     <div class="table-title">
        <div class="row" style="background-color: AliceBlue;margin-bottom: 10px">
-              <h2><b>Quản lý Users</b></h2>
+              <h4><b>Quản lý Users</b></h4>
         </div>
         
         <div class="row">
            
           <!-- Button Add User here -->
           @can('create-user',Auth::user())
-          <div class="col-sm-8" style="display: block;">
+          <div class="col-sm-8">
             <a href="{{route('dangky')}}" class="btn btn-default"><img src="source/icon/icon_add_user.png" width="20px"> <span>Thêm User</span></a>
           </div>
           @endcan
@@ -35,7 +35,7 @@
 <table id="myTable" class="table table-condensed table-striped table-hover">
   <!-- Tittle of Table data users -->
     <thead>
-          <tr class="success">
+          <tr class="info">
               <th>Tên</th>           
               <th>Email</th>
               <th>Số điện thoại</th>
@@ -145,13 +145,12 @@
               <div class="modal-header" style="background-color: AliceBlue">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                   <span aria-hidden="true">&times;</span></button>
-                  <img src="source/icon/icon_update_user.png" width="40px" style="margin-bottom:10px;">
-                <strong class="modal-title" id="titleModal" style="display: inline;"></strong>
+                <h4><strong class="modal-title" id="titleModal" style="display: inline;"></strong></h4>
               </div>
               <!-- Start Form -->
               <form id="frmUpdateUser" action="" method="post" >
 
-                <div class="modal-body">
+                <div class="modal-body" style="padding: 10px 50px 20px 50px">
                  <!-- Body Model -->
                    <label>Chức vụ</label>
                   <div class="input-group col-sm-6">
@@ -190,15 +189,7 @@
 
                     <fieldset>
                       <legend><label style="font-size: 15px">Quyền</label></legend>
-                      <label>Something:  </label>
-                      <div class="form-group" style="margin-left: 30px;">
-                            <label class="checkbox-inline">
-                              <input type="checkbox" name="is_admin" value="0" > Do something
-                            </label>
-                            <label class="checkbox-inline">
-                              <input type="checkbox" name="is_admin" value="1"> Do something else
-                            </label>
-                      </div>
+                    
                       <label>User Permissions  </label>
                       <div class="form-group" style="margin-left: 30px;">
                             <label class="checkbox-inline">
