@@ -213,8 +213,8 @@
               </form>
             
               <div class="modal-footer" style="background-color: AliceBlue">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Hủy</button>
-                <button type="button" id="btnSave" class="btn btn-default">Thay Đổi</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Hủy</button>
+                <button type="button" id="btnSave" class="btn btn-primary">Thay Đổi</button>
                
               </div>
               <div id="thongbao"></div>

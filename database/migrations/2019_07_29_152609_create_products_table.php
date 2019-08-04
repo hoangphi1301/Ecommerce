@@ -17,18 +17,20 @@ class CreateProductsTable extends Migration
             $table->increments('id');
             $table->integer('product_type_id')->unsigned();
             $table->integer('brand_id')->unsigned();
-            $table->string('name',255);
-            $table->float('price');
-            $table->float('promotion_price')->default(0);
-            $table->string('image',100);
+            $table->integer('color_id')->unsigned();
+            $table->string('name');
+            $table->integer('price');
+            $table->integer('promotion_price')->default(1);
+            $table->string('image')->default('default.jpg')->nullable();
             $table->text('description')->nullable();
-            $table->string('color',50);
-            $table->float('weight');
-            $table->integer('stock');
-            $table->string('unit',50);
+            $table->integer('amount');
             $table->timestamps();
-            // $table->foreign('product_type_id')->references('id')->on('product_types')->onDelete('cascade');
-            // $table->foreign('brand_id')->references('id')->on('brands')->onDelete('cascade');
+        });
+
+        Schema::table('products',function(Blueprint $table){
+            $table->foreign('product_type_id')->references('id')->on('product_types');
+            $table->foreign('brand_id')->references('id')->on('brands');
+            $table->foreign('color_id')->references('id')->on('colors');
         });
     }
 

@@ -55,6 +55,14 @@ Route::group(['prefix'=>'page','middleware'=>'checkadminlogin'],function(){
 
 	Route::get('them-san-pham','PageController@getCreateProduct')->name('createproduct');
 
+	Route::post('them-san-pham','PageController@postCreateProduct')->name('createproduct');
+
+	Route::get('tim-kiem-san-pham','PageController@getSearchProduct')->name('searchproduct');
+
+	Route::post('cap-nhat-chi-tiet/{id}','PageController@postUpdateDetailProduct')->name('updatedetail');
+
+	Route::get('xoa-san-pham/{id}','PageController@getDeleteDetailProduct')->name('deletedetail');
+
 });
 
 

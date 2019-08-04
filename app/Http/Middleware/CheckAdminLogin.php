@@ -16,16 +16,18 @@ class CheckAdminLogin
      */
     public function handle($request, Closure $next)
     {
-        if(Auth::user()->active ==0){
-
-            return redirect()->route('message');
-        }
+        
         
         if(Auth::check()){   
             return $next($request);      
         }
         else{
             return redirect('login');
+        }
+
+        if(Auth::user()->active ==0){
+
+            return redirect()->route('message');
         }
 
     }

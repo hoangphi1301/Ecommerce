@@ -30,7 +30,7 @@
                 <div align="center">
                   <label style="display: block;">Ảnh Đại Diện Của Bạn</label>
                   <img id="imgClick" class="img-circle" src="source/avatar/{{$user->userprofile->avatar}}" width="100px" height="100px">
-                  <input type="file" name="avatar" style="display: none;" id="ipFile" accept="image/*" >
+                  <input type="file" name="avatar" style="display:none;" id="ipFile" accept="image/*" >
                 </div>
 
                 <div class="form-group">
