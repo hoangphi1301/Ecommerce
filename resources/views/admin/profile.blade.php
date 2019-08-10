@@ -11,7 +11,6 @@
                   {{session('thanhcong')}}<br>
                 </div>
               @endif
-             
 
 <div id="content" style="display: contents;">
 

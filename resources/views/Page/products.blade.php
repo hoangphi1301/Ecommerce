@@ -285,6 +285,12 @@ $(document).ready(function(){
 
 	// Get data to Modal Detail Product
 	$('.viewClick').click(function(){
+		// $tr = $(this).closest('tr');
+		// var data = $tr.children('td').map(function(){
+		// 	return $(this).text();
+		// }).get();
+		// console.log(data);
+
 		var name = $(this).attr('name');
 		var type = $(this).attr('type');
 		var brand = $(this).attr('brand');
@@ -421,7 +427,7 @@ $(document).ready(function(){
 		$('#message').attr('class','');
 		$('#message').html('');
 		if(reload){
-			window.location.href = "page/san-pham";
+			location.reload();
 		}
 	});
 

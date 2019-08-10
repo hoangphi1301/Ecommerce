@@ -63,6 +63,34 @@ Route::group(['prefix'=>'page','middleware'=>'checkadminlogin'],function(){
 
 	Route::get('xoa-san-pham/{id}','PageController@getDeleteDetailProduct')->name('deletedetail');
 
+	Route::get('thuoc-tinh-san-pham','PageController@getViewAttributeProduct')->name('viewattributeproduct');
+
+	Route::post('them-loai-san-pham','PageController@postInsertProductType')->name('insertproducttype');
+
+	Route::post('sua-loai-san-pham/{id}','PageController@postUpdateProductType')->name('updateproducttype');
+
+	Route::get('xoa-loai-san-pham/{id}','PageController@getDeleteProductType')->name('deleteproducttype');
+
+	Route::post('them-thuong-hieu','PageController@postInsertBrand')->name('insertbrand');
+
+	Route::post('sua-thuong-hieu/{id}','PageController@postUpdateBrand')->name('updatebrand');
+
+	Route::get('xoa-thuong-hieu/{id}','PageController@getDeleteBrand')->name('deletebrand');
+
+	Route::post('them-mau-sac','PageController@postInsertColor')->name('insertcolor');
+
+	Route::post('sua-mau-sac/{id}','PageController@postUpdateColor')->name('updatecolor');
+
+	Route::get('xoa-mau-sac/{id}','PageController@getDeleteColor')->name('deletecolor');
+
+	Route::get('category','PageController@getViewCategory')->name('viewcategory');
+
+	Route::post('them-category','PageController@postInsertCategory')->name('insertcategory');
+
+	Route::post('cap-nhat-category/{id}','PageController@postUpdateCategory')->name('updatecategory');
+
+	Route::get('xoa-category/{id}','PageController@getDeleteCategory')->name('deletecategory');
+
 });
 
 

@@ -9,19 +9,20 @@ use App\ProductType;
 use App\Brand;
 use App\DetailProduct;
 use App\Color;
+use App\Category;
 use Illuminate\Support\Facades\DB;
 
 class PageController extends Controller
 {
     public function getProducts(){
-    	$products = Product::orderBy('name')->paginate(5);
+    	$products = Product::orderBy('name')->paginate(6);
     	return view('page.products',compact('products'));
     }
 
     public function getSearchProduct(Request $rq){
     	$products = Product::where('name','like','%'.$rq->searchproduct.'%')
     						->orWhere('price','=',$rq->searchproduct)
-    						->paginate(5);
+    						->paginate(6);
 
     	return view('page.products',compact('products'));
     }
@@ -140,4 +141,193 @@ class PageController extends Controller
     	$colors = Color::all();
     	return view('page.createproduct',compact('types','brands','colors'));
     }
+
+    public function getViewAttributeProduct(){
+    	$types = ProductType::orderBy('name')->get();
+    	$brands = Brand::orderBy('name')->get();
+    	$colors = Color::orderBy('name')->get();
+    	return view('page.producttype',compact('types','brands','colors'));
+    }
+
+    public function postInsertProductType(Request $rq){
+		$validator = Validator::make($rq->all(),[
+			'nametype'=>'required|max:20|unique:product_types,name',
+		],[
+			'nametype.required'=>'Bạn chưa nhập tên loại',
+			'nametype.max'=>'Tên loại quá dài.',
+			'nametype.unique'=>'Tên loại sản phẩm này đã tồn tại'
+		]);
+		if($validator->fails()){
+			return response()->json(['errorinserttype'=>$validator->errors()->all()]);
+		}
+			DB::table('product_types')->insert(['name'=>$rq->nametype]);
+
+    	return response()->json(['successinserttype'=>'Bạn đã thêm loại sản phẩm thành công.']);
+	}
+	
+	public function postUpdateProductType(Request $rq,$id){
+		$validator = Validator::make($rq->all(),[
+			'nametype'=>'required|max:20',
+		],[
+			'nametype.required'=>'Bạn chưa nhập tên loại',
+			'nametype.max'=>'Tên loại quá dài.',
+		]);
+		if($validator->fails()){
+			return response()->json(['errorupdatetype'=>$validator->errors()->all()]);
+		}
+
+		DB::table('product_types')->where('id',$id)->update(['name'=>$rq->nametype]);
+
+		return response()->json(['successupdatetype'=>'Bạn đã cập nhật loại sản phẩm thành công.']);
+	}
+
+	public function getDeleteProductType($id){
+		if(Product::where('product_type_id',$id)->count() > 0){
+			return redirect()->back()->with('thatbai','Bạn không thể xóa loại sản phẩm này vì đã được liên kết với bảng Sản Phẩm');
+		}
+		DB::table('product_types')->where('id',$id)->delete();
+		return redirect()->back()->with('thanhcong','Bạn đã xóa thành công.');
+	}
+
+	public function postInsertBrand(Request $rq){
+		$validator = Validator::make($rq->all(),[
+			'namebrand'=>'required|max:20|unique:brands,name',
+		],[
+			'namebrand.required'=>'Bạn chưa nhập tên thương hiệu',
+			'namebrand.max'=>'Tên thương hiệu quá dài.',
+			'namebrand.unique'=>'Tên thương hiệu này đã tồn tại'
+		]);
+		if($validator->fails()){
+			return response()->json(['errorinsertbrand'=>$validator->errors()->all()]);
+		}
+
+		DB::table('brands')->insert([
+			'name'=>$rq->namebrand,
+			'description'=>$rq->descriptionBrand
+			]);
+
+		return response()->json(['successinsertbrand'=>'Bạn thêm thương hiệu thành công.']);
+	}
+
+	public function postUpdateBrand(Request $rq,$id){
+		$validator = Validator::make($rq->all(),[
+			'namebrand'=>'required|max:20',
+		],[
+			'namebrand.required'=>'Bạn chưa nhập tên thương hiệu',
+			'namebrand.max'=>'Tên thương hiệu quá dài.',
+		]);
+		if($validator->fails()){
+			return response()->json(['errorupdatebrand'=>$validator->errors()->all()]);
+		}
+
+		DB::table('brands')->where('id',$id)->update([
+			'name'=>$rq->namebrand,
+			'description'=>$rq->descriptionBrand
+			]);
+
+		return response()->json(['successupdatebrand'=>'Bạn đã cập nhật thương hiệu thành công.']);
+	}
+
+	public function getDeleteBrand($id){
+		if(Product::where('brand_id',$id)->count() > 0){
+			return redirect()->back()->with('thatbai','Bạn không thể xóa thương hiệu này vì đã được liên kết với bảng Sản Phẩm');
+		}
+		DB::table('brands')->where('id',$id)->delete();
+		return redirect()->back()->with('thanhcong','Bạn đã xóa thành công.');
+	}
+
+	public function postInsertColor(Request $rq){
+		$validator = Validator::make($rq->all(),[
+			'nameColor'=>'required|max:20|unique:colors,name',
+			'codeColor'=>'required|max:20'
+		],[
+			'nameColor.required'=>'Bạn chưa nhập tên màu',
+			'nameColor.max'=>'Tên màu quá dài.',
+			'nameColor.unique'=>'Tên màu này đã tồn tại.',
+			'codeColor.required'=>'Bạn chưa nhập mã màu.',
+			'codeColor.max'=>'Mã màu quá dài.'
+		]);
+		if($validator->fails()){
+			return response()->json(['errorinsertcolor'=>$validator->errors()->all()]);
+		}
+
+		DB::table('colors')->insert([
+			'name'=>$rq->nameColor,
+			'code'=>$rq->codeColor
+			]);
+
+		return response()->json(['successinsertcolor'=>'Bạn đã thêm màu thành công.']);
+	}
+
+	public function postUpdateColor(Request $rq,$id){
+		$validator = Validator::make($rq->all(),[
+			'nameColor'=>'required|max:20',
+			'codeColor'=>'required|max:20'
+		],[
+			'nameColor.required'=>'Bạn chưa nhập tên màu',
+			'nameColor.max'=>'Tên màu quá dài.',
+			'codeColor.required'=>'Bạn chưa nhập mã màu.',
+			'codeColor.max'=>'Mã màu quá dài.'
+		]);
+		if($validator->fails()){
+			return response()->json(['errorupdatecolor'=>$validator->errors()->all()]);
+		}
+
+		DB::table('colors')->where('id',$id)->update([
+			'name'=>$rq->nameColor,
+			'code'=>$rq->codeColor
+		]);
+
+		return response()->json(['successupdatecolor'=>'Bạn đã cập nhật màu thành công.']);
+	}
+
+	public function getDeleteColor($id){
+		if(Product::where('color_id',$id)->count() > 0){
+			return redirect()->back()->with('thatbai','Bạn không thể xóa màu sắc này vì đã được liên kết với bảng Sản Phẩm');
+		}
+		DB::table('colors')->where('id',$id)->delete();
+		return redirect()->back()->with('thanhcong','Bạn đã xóa thành công.');
+	}
+
+	public function getViewCategory(){
+		$category = Category::orderBy('name')->paginate(6);
+		return view('page.category',compact('category'));
+	}
+
+	public function postInsertCategory(Request $rq){
+		$validator = Validator::make($rq->all(),[
+			'name'=>'required|max:20|unique:categories'
+		],[
+			'name.required'=>'Bạn chưa nhập danh mục.',
+			'name.max'=>'Danh mục quá dài.',
+			'name.unique'=>'Danh mục này đã tồn tại'
+		]);
+		if($validator->fails()){
+			return response()->json(['error'=>$validator->errors()->all()]);
+		}
+		DB::table('categories')->insert(['name'=>$rq->name]);
+
+		return response()->json(['thanhcong'=>'Bạn đã thêm danh mục thành công.']);
+	}
+
+	public function postUpdateCategory(Request $rq,$id){
+		$validator = Validator::make($rq->all(),[
+			'name'=>'required|max:20'
+		],[
+			'name.required'=>'Bạn chưa nhập danh mục.',
+			'name.max'=>'Danh mục quá dài.',
+		]);
+		if($validator->fails()){
+			return response()->json(['error'=>$validator->errors()->all()]);
+		}
+
+		DB::table('categories')->where('id',$id)->update(['name'=>$rq->name]);
+
+		return response()->json(['thanhcong'=>'Bạn đã cập nhật danh mục thành công.']);
+	}
+
+	public function getDeleteCategory($id){
+		DB::table('categories')->where('id',$id)->delete();
+		return redirect()->back()->with(['thanhcong'=>'Bạn đã xóa thành công.']);
+	}
 }

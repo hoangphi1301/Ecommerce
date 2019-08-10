@@ -39,20 +39,9 @@
 
         <li><a href="{{route('products')}}"><i class="fa fa-shopping-cart"></i> <span>Sản Phẩm</span></a></li>
 
-        <li class="treeview">
-          <a href="#"><i class="glyphicon glyphicon-menu-hamburger"></i> <span>Thuộc Tính Sản Phẩm</span>
-            <span class="pull-right-container">
-                <i class="fa fa-angle-left pull-right"></i>
-              </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="#">Loại sản phẩm</a></li>
-            <li><a href="#">Nhà sản xuất</a></li>
-            <li><a href="#">Màu sản phẩm</a></li>
-          </ul>
-        </li>
+         <li><a href="{{route('viewattributeproduct')}}"><i class="glyphicon glyphicon-list"></i> <span>Thuộc Tính Sản Phẩm</span></a></li>
 
-          <li><a href="#"><i class="fa fa-shopping-cart"></i> <span>Categories</span></a></li>
+      <li><a href="{{route('viewcategory')}}"><i class="glyphicon glyphicon-list-alt"></i> <span>Categories</span></a></li>
 
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
