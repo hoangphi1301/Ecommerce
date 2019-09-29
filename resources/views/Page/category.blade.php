@@ -20,6 +20,7 @@
             <thead>
                 <tr class="info">
                     <th>Tên</th>
+                    <th>Ảnh</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -28,8 +29,9 @@
                 <tr>
                 <td style="display:none">{{$category->id}}</td>
                     <td><b>{{$category->name}}</b></td>
+                    <td><img src="source/image/category/{{$category->image}}" width="150px" height="150px"></td>
                     <td>
-                        <a class="getData" href="#" data-toggle="modal" data-target="#modalUpdateCategory"><span class="glyphicon glyphicon-pencil label label-warning"> Sửa</span></a>
+                        <a class="getData" image="{{$category->image}}" href="#" data-toggle="modal" data-target="#modalUpdateCategory"><span class="glyphicon glyphicon-pencil label label-warning"> Sửa</span></a>
                     <a href="{{route('deletecategory',$category->id)}}" onclick="return confirm('Bạn có muốn xóa danh mục {{$category->name}} không ?')"><span class="glyphicon glyphicon-remove-circle label label-danger"> Xóa</span></a>
                     </td>
                 </tr>
@@ -37,7 +39,7 @@
             </tbody>
         </table>
     </div>
-    <div class="row">{{ $category->paginate(6)->links() }}</div>
+    <div class="row">{{ $category->paginate(5)->links() }}</div>
 </div>
 
 {{-- Modal Insert Category Here --}}
@@ -53,6 +55,11 @@
                 <div class="form-group">
                     <label>Tên danh mục</label>
                     <input name="name" type="text" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Ảnh</label>
+                    <img id="imgInsertCategory" src="source/image/category/default.jpg" class="img-thumbnail" width="200px" height="200px">
+                    <input id="ipfileInsert" accept="image/*" type="file" style="display: none">
                 </div>
             </div>
             <div class="modal-footer">
@@ -80,6 +87,11 @@
                     <input type="hidden" id="ipid">
                     <input id="ipname" name="name" type="text" class="form-control">
                 </div>
+                <div class="form-group">
+                    <label>Ảnh</label>
+                    <img id="imgUpdateCategory" src="source/image/category/default.jpg" class="img-thumbnail" width="200px" height="200px">
+                    <input accept="image/*" id="ipfileUpdate" type="file" style="display: none">
+                </div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-default" data-dismiss="modal"> Hủy</button>
@@ -102,6 +114,35 @@ $(document).ready(function(){
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
                     }
             });
+        // Click image to choose file Insert Category
+        $('#imgInsertCategory').click(function(){
+            $('#ipfileInsert').click();
+        });
+
+          $('#ipfileInsert').change(function(){
+              readURL(this,$('#imgInsertCategory'));
+          });
+    
+        // Click image to choose file Update Category
+        $('#imgUpdateCategory').click(function(){
+            $('#ipfileUpdate').click();
+        });
+
+          $('#ipfileUpdate').change(function(){
+              readURL(this,$('#imgUpdateCategory'));
+          });
+
+          // Function Click image to preview choose file
+        function readURL(input,image) {
+          if (input.files && input.files[0]) {
+              var reader = new FileReader();
+              reader.onload = function (e) {
+                  image.attr('src', e.target.result);
+              }            
+              reader.readAsDataURL(input.files[0]);                       
+            }
+          }
+          // End Function preview image
 
         // Get data to Modal
         $('.getData').click(function(){
@@ -111,17 +152,22 @@ $(document).ready(function(){
             });
             $('#ipid').val(datatable[0]);
             $('#ipname').val(datatable[1]);
+            $('#imgUpdateCategory').attr('src','source/image/category/'+$(this).attr('image'));
         });
 
         // Ajax insert category
         $('#btnInsertCategory').click(function(e){
             e.preventDefault();
+            var frmData = new FormData($('#frmInsertCategory')[0]);
+            frmData.append('image',$('#ipfileInsert')[0].files[0]);
             $.ajax({
             type: 'post',
-            data: $('#frmInsertCategory').serialize(),
+            data: frmData,
+            processData: false,
+            contentType: false,
             url: 'page/them-category',
             success: function(data){
-                // console.log(data);
+                console.log(data);
                 $.each(data,function(key,value){
                     if(key=='thanhcong'){
                         $('#messageInsertCategory').attr('class','alert alert-success');
@@ -143,9 +189,16 @@ $(document).ready(function(){
         // Ajax update category
         $('#btnUpdateCategory').click(function(e){
             e.preventDefault();
+            var frmData = new FormData($('#frmUpdateCategory')[0]);
+            frmData.append('image',$('#ipfileUpdate')[0].files[0]);
+            if(frmData.get('image') == 'undefined'){
+                frmData.delete('image');
+            }
             $.ajax({
                 type: 'post',
-                data: $('#frmUpdateCategory').serialize(),
+                data: frmData,
+                processData: false,
+                contentType: false,
                 url: 'page/cap-nhat-category/' + $('#ipid').val(),
                 success: function(data){
                     console.log(data);

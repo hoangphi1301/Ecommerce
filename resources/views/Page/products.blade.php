@@ -78,7 +78,7 @@
 			</tbody>
 		</table>
 	</div>
-	<div class="row">{{$products->links()}}</div>
+	{{-- <div class="row">{{$products->links()}}</div> --}}
 </div>
 
 <!-- Modal Detail Product -->

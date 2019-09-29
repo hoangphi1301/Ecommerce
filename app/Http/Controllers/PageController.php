@@ -290,38 +290,63 @@ class PageController extends Controller
 	}
 
 	public function getViewCategory(){
-		$category = Category::orderBy('name')->paginate(6);
+		$category = Category::orderBy('name')->paginate(5);
 		return view('page.category',compact('category'));
 	}
 
 	public function postInsertCategory(Request $rq){
 		$validator = Validator::make($rq->all(),[
-			'name'=>'required|max:20|unique:categories'
+			'name'=>'required|max:20|unique:categories',
+			'image'=>'required|image|max:2048'
 		],[
 			'name.required'=>'Bạn chưa nhập danh mục.',
 			'name.max'=>'Danh mục quá dài.',
-			'name.unique'=>'Danh mục này đã tồn tại'
+			'name.unique'=>'Danh mục này đã tồn tại',
+			'image.required'=>'Bạn chưa chọn ảnh.',
+			'image.image'=>'File ảnh không đúng định dạng.',
+			'image.max'=>'Kích thước file quá lớn.'
 		]);
 		if($validator->fails()){
 			return response()->json(['error'=>$validator->errors()->all()]);
 		}
-		DB::table('categories')->insert(['name'=>$rq->name]);
+		
+		$filename = '';
+		if($rq->hasFile('image')){
+    		$file = $rq->file('image');
+    		$filename = $file->getClientOriginalName();
+    		$file->move('source/image/Category/',$filename);
+    	}
+
+    	DB::table('categories')->insert(['name'=>$rq->name,'image'=>$filename]);
 
 		return response()->json(['thanhcong'=>'Bạn đã thêm danh mục thành công.']);
 	}
 
 	public function postUpdateCategory(Request $rq,$id){
 		$validator = Validator::make($rq->all(),[
-			'name'=>'required|max:20'
+			'name'=>'required|max:20',
+			'image'=>'image|max:2048'
 		],[
 			'name.required'=>'Bạn chưa nhập danh mục.',
 			'name.max'=>'Danh mục quá dài.',
+			'image.image'=>'File ảnh không đúng định dạng.',
+			'image.max'=>'Kích thước file quá lớn.'
 		]);
 		if($validator->fails()){
 			return response()->json(['error'=>$validator->errors()->all()]);
 		}
+		$filename ='';
+		if($rq->hasFile('image')){
+			$file = $rq->file('image');
+			$filename = $file->getClientOriginalName();
+			$file->move('source/image/Category/',$filename);
+		}
 
-		DB::table('categories')->where('id',$id)->update(['name'=>$rq->name]);
+		if($filename){
+			DB::table('categories')->where('id',$id)->update(['name'=>$rq->name,'image'=>$filename]);
+		}else{
+			DB::table('categories')->where('id',$id)->update(['name'=>$rq->name]);
+		}
 
 		return response()->json(['thanhcong'=>'Bạn đã cập nhật danh mục thành công.']);
 	}
